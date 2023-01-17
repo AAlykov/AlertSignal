@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.tomsk.alykov.alertsignal.screens.ListFragment"
+        android:label="@string/caption_signals_list"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_signalInfoFragment"
+            app:destination="@id/signalInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right_to_left_in"
+            app:popExitAnim="@anim/slide_in_right_to_left_out" />
+        <action
+            android:id="@+id/action_listFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signalInfoFragment"
+        android:name="com.tomsk.alykov.alertsignal.screens.SignalInfoFragment"
+        android:label="@string/caption_signal_info"
+        tools:layout="@layout/fragment_signal_info" >
+        <action
+            android:id="@+id/action_signalInfoFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.tomsk.alykov.alertsignal.screens.SettingsFragment"
+        android:label="@string/caption_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AlertSignal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="caption_list">Сигналы</string>
+    <string name="caption_settings">Настройки</string>
+    <string name="caption_connection_problem">Ошибка подключения</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_login">Войти</string>
+    <string name="caption_signals_list">Список сигналов</string>
+    <string name="caption_signal_info">Подробная информация о сигнале</string>
+</resources>
