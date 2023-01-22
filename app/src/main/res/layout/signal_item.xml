@@ -29,7 +29,7 @@
             android:layout_margin="10dp">
 
             <TextView
-                android:id="@+id/textViewObject"
+                android:id="@+id/textViewObjectCenter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ПУ Объект 107"
@@ -48,7 +48,7 @@
                 app:cardCornerRadius="10dp">
 
                 <TextView
-                    android:id="@+id/textViewSignal"
+                    android:id="@+id/textViewSignalName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"

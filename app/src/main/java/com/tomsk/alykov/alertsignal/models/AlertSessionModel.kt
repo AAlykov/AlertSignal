@@ -4,6 +4,19 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//session_code
+//sender_name
+//signal_name
+//signal_type
+//signal_grade
+//signal_text
+//session_start_time
+//session_get_time
+//session_confirm_time
+//user_name
+//user_id_firebase
+//session_id_firebase
+
 @Entity(tableName = "alert_session_table")
 data class AlertSessionModel(
     @PrimaryKey(autoGenerate = true)
@@ -11,6 +24,9 @@ data class AlertSessionModel(
 
     @ColumnInfo(name ="session_code")
     val sessionCode: String,
+
+    @ColumnInfo(name ="sender_name")
+    val senderName: String,
 
     @ColumnInfo(name ="signal_name")
     val signalName: String,

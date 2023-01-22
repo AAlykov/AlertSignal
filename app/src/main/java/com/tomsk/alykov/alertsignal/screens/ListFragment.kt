@@ -9,24 +9,30 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.tomsk.alykov.alertsignal.R
+import com.tomsk.alykov.alertsignal.databinding.FragmentListBinding
 import com.tomsk.alykov.alertsignal.models.AlertSessionModel
 import com.tomsk.alykov.alertsignal.viewmodels.AlertSessionViewModel
 
 
 class ListFragment : Fragment() {
 
+    private lateinit var binding: FragmentListBinding
     private lateinit var alertSessionList: List<AlertSessionModel>
     private lateinit var alertSessionViewModel: AlertSessionViewModel
+    private lateinit var alertSessionListAdapter: AlertSessionListAdapter
+    private lateinit var alertSessionRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        binding = FragmentListBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
 
@@ -42,20 +48,28 @@ class ListFragment : Fragment() {
             //navController.navigate(R.id.signalInfoFragment)
             navController.navigate(R.id.action_listFragment_to_signalInfoFragment)
         }
+        alertSessionListAdapter = AlertSessionListAdapter()
+        alertSessionRecyclerView = binding.rvAlertsessions
+        alertSessionRecyclerView.adapter = alertSessionListAdapter
 
         alertSessionViewModel = ViewModelProvider(this).get(AlertSessionViewModel::class.java)
         alertSessionViewModel.getAllAlertSessions.observe(viewLifecycleOwner, Observer {
-            Log.d("AADebug", "getAllAlertSessions: " + it.toString())
+            Log.d("AADebug", "list: " + it.toString())
+            val list = it
+            alertSessionListAdapter.setData(list)
         })
 
+
+
+
         buttonAddSignalRoom.setOnClickListener {
-            val alertSessionModel = AlertSessionModel(0, "001/1234", "Техническая проверка системы оповещения",
+            val alertSessionModel = AlertSessionModel(0, "001/1234", "Объект 178","Техническая проверка системы оповещения",
                 1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
                 "20230117 12:40:01", "20230117 12:40:10", "", "", "", "")
             alertSessionViewModel.addAlertSession(alertSessionModel)
         }
 
-        super.onViewCreated(view, savedInstanceState)
+        //super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
