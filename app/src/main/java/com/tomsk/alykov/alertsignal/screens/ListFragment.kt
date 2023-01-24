@@ -1,9 +1,15 @@
 package com.tomsk.alykov.alertsignal.screens
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +50,9 @@ class ListFragment : Fragment() {
 
         val navController = findNavController()
         buttonToFragmentSignalInfo.setOnClickListener {
+
+            showNotification()
+
             //Два варианта перехода
             //navController.navigate(R.id.signalInfoFragment)
             navController.navigate(R.id.action_listFragment_to_signalInfoFragment)
@@ -70,6 +79,10 @@ class ListFragment : Fragment() {
         }
 
         //super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun showNotification() {
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
