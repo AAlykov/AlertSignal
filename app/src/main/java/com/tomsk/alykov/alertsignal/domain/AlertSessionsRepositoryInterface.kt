@@ -11,5 +11,5 @@ interface AlertSessionsRepositoryInterface {
 
     suspend fun setTest(alertSessionModel: AlertSessionModel)
 
-    //fun loadData()
+    fun getData()
 }

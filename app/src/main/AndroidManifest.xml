@@ -33,7 +33,7 @@
         </activity>
 
         <receiver
-            android:name=".StartOnBootReceiver"
+            android:name=".data.StartOnBootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

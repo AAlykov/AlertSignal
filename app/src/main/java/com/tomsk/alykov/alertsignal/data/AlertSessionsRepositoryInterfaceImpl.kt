@@ -2,7 +2,10 @@ package com.tomsk.alykov.alertsignal.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.tomsk.alykov.alertsignal.data.room.AlertSessionDatabase
+import com.tomsk.alykov.alertsignal.data.workers.GetDataWorker
 import com.tomsk.alykov.alertsignal.domain.AlertSessionsRepositoryInterface
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
@@ -29,5 +32,14 @@ class AlertSessionsRepositoryInterfaceImpl(private val application: Application)
 
     override suspend fun setTest(alertSessionModel: AlertSessionModel) {
         alertSessionDao.addAlertSession(alertSessionModel)
+    }
+
+    override fun getData() {
+        val workManager = WorkManager.getInstance(application)
+        workManager.enqueueUniqueWork(
+            GetDataWorker.NAME,
+            ExistingWorkPolicy.REPLACE,
+            GetDataWorker.makeRequest()
+        )
     }
 }

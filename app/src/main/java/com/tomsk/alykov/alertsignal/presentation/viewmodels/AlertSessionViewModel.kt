@@ -8,6 +8,7 @@ import com.tomsk.alykov.alertsignal.domain.GetAllAlertSessionsUseCase
 import com.tomsk.alykov.alertsignal.domain.usecase.GetNotConfirmAlertSessionUseCase
 import com.tomsk.alykov.alertsignal.domain.SetTestUseCase
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
+import com.tomsk.alykov.alertsignal.domain.usecase.GetDataFBUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,11 +22,15 @@ class AlertSessionViewModel(application: Application): AndroidViewModel(applicat
     val alertSessionsList = getAllAlertSessionsUseCase.execute()
     val notConfirmAlertSession = getNotConfirmAlertSessionUseCase.execute()
 
+    //private val getDataFBUseCase = GetDataFBUseCase(alertSessionsRepositoryInterfaceImpl)
+    private val getDataFBUseCase by lazy { GetDataFBUseCase(alertSessionsRepositoryInterfaceImpl) }
+
 
     //private val alertSessionRepository: AlertSessionRepository
     //val getAllAlertSessions: LiveData<List<AlertSessionModel>>
 
     init {
+        getDataFBUseCase.execute()
         //val alertSessionDao = AlertSessionDatabase.getDatabase(application).alertSessionDao()
         //alertSessionRepository = AlertSessionRepository(alertSessionDao)
         //getAllAlertSessions = alertSessionRepository.getAllAlertSessions

@@ -1,4 +1,4 @@
-package com.tomsk.alykov.alertsignal
+package com.tomsk.alykov.alertsignal.data
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,6 +13,10 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
+import com.tomsk.alykov.alertsignal.R
+import com.tomsk.alykov.alertsignal.data.workers.GetDataWorker
 import com.tomsk.alykov.alertsignal.presentation.MainActivity
 
 class StartOnBootReceiver: BroadcastReceiver() {
@@ -26,21 +30,34 @@ class StartOnBootReceiver: BroadcastReceiver() {
 //            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //            context!!.startActivity(i)
 
-            notifyAfterReboot(context, intent)
+            startWorker(context, intent)
+            //notifyAfterReboot(context, intent)
+
+        }
+    }
+
+    private fun startWorker(context: Context?, intent: Intent) {
+        if (context != null) {
+            Log.d("AADebug", "notifyAfterReboot: ")
+            Toast.makeText(context,"Приложение " + context.resources.getString(R.string.app_name) + " запущено",Toast.LENGTH_LONG).show()
+
+            val workManager = WorkManager.getInstance(context)
+            Log.d("AADebug", "notifyAfterReboot: workManager = $workManager")
+            workManager.enqueueUniqueWork(
+                GetDataWorker.NAME,
+                ExistingWorkPolicy.REPLACE,
+                GetDataWorker.makeRequest()
+            )
+            Log.d("AADebug", "notifyAfterReboot: workManager.enqueueUniqueWork")
         }
     }
 
 
     private fun notifyAfterReboot(context: Context?, intent: Intent) {
-        if (context != null) {
-            Log.d("AADebug", "notifyAfterReboot: ")
-            Toast.makeText(context,"Приложение " + context.resources.getString(R.string.app_name) + " запущено",Toast.LENGTH_LONG).show()
-        }
+
 
         val contentText = "Приложение " + context!!.resources.getString(R.string.app_name) + " запущено"
-
         val notificationManager = context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(
@@ -55,7 +72,9 @@ class StartOnBootReceiver: BroadcastReceiver() {
         val intentAlertSignalApp = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intentAlertSignalApp, PendingIntent.FLAG_IMMUTABLE)
         val vibrate = longArrayOf(100, 500, 100, 500)
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_baseline_crisis_alert_24)
+        val bitmap = BitmapFactory.decodeResource(context.resources,
+            R.drawable.ic_baseline_crisis_alert_24
+        )
         val notification = NotificationCompat.Builder(context, "AlertSignal") //тут убиваем два зайца = без проверок на апи 26
             .setContentTitle("AlertSignal")
             .setContentText(contentText)
