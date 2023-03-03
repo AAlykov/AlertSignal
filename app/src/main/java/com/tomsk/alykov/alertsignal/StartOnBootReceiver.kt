@@ -13,6 +13,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.tomsk.alykov.alertsignal.presentation.MainActivity
 
 class StartOnBootReceiver: BroadcastReceiver() {
 
@@ -20,7 +21,7 @@ class StartOnBootReceiver: BroadcastReceiver() {
         Log.d("AADebug", "onReceive: !!!!!!!!!!!1")
         if (Intent.ACTION_BOOT_COMPLETED == intent!!.action) {
 
-//            Log.d("AADebug", "onReceive: ACTION_BOOT_COMPLETED")
+            Log.d("AADebug", "onReceive: ACTION_BOOT_COMPLETED")
 //            val i = Intent(context, MainActivity::class.java)
 //            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //            context!!.startActivity(i)

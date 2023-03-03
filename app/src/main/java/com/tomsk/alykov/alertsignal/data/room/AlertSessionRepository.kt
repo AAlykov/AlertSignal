@@ -1,7 +1,7 @@
-package com.tomsk.alykov.alertsignal.database.room
+package com.tomsk.alykov.alertsignal.data.room
 
 import androidx.lifecycle.LiveData
-import com.tomsk.alykov.alertsignal.models.AlertSessionModel
+import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
 class AlertSessionRepository(private val alertSessionDao: AlertSessionDao) {
 

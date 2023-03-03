@@ -1,4 +1,4 @@
-package com.tomsk.alykov.alertsignal.screens
+package com.tomsk.alykov.alertsignal.presentation.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import com.tomsk.alykov.alertsignal.R
 
 
-class SignalInfoFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signal_info, container, false)
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.tomsk.alykov.alertsignal.models
+package com.tomsk.alykov.alertsignal.domain.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 //user_id_firebase
 //session_id_firebase
 
-@Entity(tableName = "alert_session_table")
+@Entity(tableName = "alert_sessions_table")
 data class AlertSessionModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,

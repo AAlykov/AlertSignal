@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.tomsk.alykov.alertsignal.screens.ListFragment"
+        android:name="com.tomsk.alykov.alertsignal.presentation.screens.ListFragment"
         android:label="@string/caption_signals_list"
         tools:layout="@layout/fragment_list" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/signalInfoFragment"
-        android:name="com.tomsk.alykov.alertsignal.screens.SignalInfoFragment"
+        android:name="com.tomsk.alykov.alertsignal.presentation.screens.SignalInfoFragment"
         android:label="@string/caption_signal_info"
         tools:layout="@layout/fragment_signal_info" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.tomsk.alykov.alertsignal.screens.SettingsFragment"
+        android:name="com.tomsk.alykov.alertsignal.presentation.screens.SettingsFragment"
         android:label="@string/caption_settings"
         tools:layout="@layout/fragment_settings" >
         <action

@@ -1,4 +1,4 @@
-package com.tomsk.alykov.alertsignal.screens
+package com.tomsk.alykov.alertsignal.presentation.screens
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tomsk.alykov.alertsignal.R
-import com.tomsk.alykov.alertsignal.models.AlertSessionModel
+import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
 class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.tomsk.alykov.alertsignal.screens
+package com.tomsk.alykov.alertsignal.presentation.screens
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -20,8 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.databinding.FragmentListBinding
-import com.tomsk.alykov.alertsignal.models.AlertSessionModel
-import com.tomsk.alykov.alertsignal.viewmodels.AlertSessionViewModel
+import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
+import com.tomsk.alykov.alertsignal.presentation.viewmodels.AlertSessionViewModel
 
 
 class ListFragment : Fragment() {
@@ -40,6 +41,8 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,13 +65,34 @@ class ListFragment : Fragment() {
         alertSessionRecyclerView.adapter = alertSessionListAdapter
 
         alertSessionViewModel = ViewModelProvider(this).get(AlertSessionViewModel::class.java)
+
+        /*
         alertSessionViewModel.getAllAlertSessions.observe(viewLifecycleOwner, Observer {
+            Log.d("AADebug", "list: " + it.toString())
+            val list = it
+            alertSessionListAdapter.setData(list)
+        }) */
+        alertSessionViewModel.alertSessionsList.observe(viewLifecycleOwner, Observer {
             Log.d("AADebug", "list: " + it.toString())
             val list = it
             alertSessionListAdapter.setData(list)
         })
 
-
+        alertSessionViewModel.notConfirmAlertSession.observe(viewLifecycleOwner, Observer {
+            if (it!=null) {
+                Log.d("AADebug", "NotConfirm: " + it.toString())
+                val mes = it.senderName + "\n" + it.signalName + "\n" + it.sessionStartTime
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Сигнал оповещения!")
+                    .setMessage(mes)
+                    .setIcon(R.drawable.ic_baseline_crisis_alert_24)
+                    .setPositiveButton("Подтвердить") { dialog, id ->
+                        dialog.cancel()
+                    }
+                builder.create()
+                builder.show()
+            }
+        })
 
 
         buttonAddSignalRoom.setOnClickListener {

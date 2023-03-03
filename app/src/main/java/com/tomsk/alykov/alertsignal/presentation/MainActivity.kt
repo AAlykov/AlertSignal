@@ -1,23 +1,20 @@
-package com.tomsk.alykov.alertsignal
+package com.tomsk.alykov.alertsignal.presentation
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -51,7 +48,9 @@ class MainActivity : AppCompatActivity() {
             val intentAlertSignalApp = Intent(this, MainActivity::class.java)
             val pendingIntent = PendingIntent.getActivity(this, 0, intentAlertSignalApp, PendingIntent.FLAG_IMMUTABLE)
             val vibrate = longArrayOf(100, 500, 100, 500)
-            val bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.ic_baseline_crisis_alert_24)
+            val bitmap = BitmapFactory.decodeResource(this.resources,
+                R.drawable.ic_baseline_crisis_alert_24
+            )
             val notification = NotificationCompat.Builder(this, "AlertSignal") //тут убиваем два зайца = без проверок на апи 26
                 .setContentTitle("AlertSignal")
                 .setContentText("Text")
