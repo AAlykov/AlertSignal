@@ -5,6 +5,6 @@ import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
 class GetDataFBUseCase(private val alertSessionsRepositoryInterface: AlertSessionsRepositoryInterface) {
     fun execute() {
-        return alertSessionsRepositoryInterface.getData()
+        return alertSessionsRepositoryInterface.getDataFB()
     }
 }

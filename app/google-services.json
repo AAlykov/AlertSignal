@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "294815441495",
+    "project_id": "alert-signal-3248e",
+    "storage_bucket": "alert-signal-3248e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294815441495:android:2ac5d85d2df42610c93912",
+        "android_client_info": {
+          "package_name": "com.tomsk.alykov.alertsignal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294815441495-ft6tkqlvfp5qpnivra7v0v2kkirbhetn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tomsk.alykov.alertsignal",
+            "certificate_hash": "7a270226482c1110015bbaf926070af0ec808c2c"
+          }
+        },
+        {
+          "client_id": "294815441495-su658vos09mv6dd0du4uupje0e6ej0gk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tomsk.alykov.alertsignal",
+            "certificate_hash": "2aa8422e9dd4dde0b16acc0e565990a9364ea6f2"
+          }
+        },
+        {
+          "client_id": "294815441495-ejim3do9g4k8j8ic097bkl0ssjcsfbrq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd2wtLZnlcb8wr-IqBYOzAr9E0Vpnjrt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294815441495-ejim3do9g4k8j8ic097bkl0ssjcsfbrq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ package com.tomsk.alykov.alertsignal.domain.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 //session_code
 //sender_name
@@ -57,4 +58,4 @@ data class AlertSessionModel(
 
     @ColumnInfo(name ="session_id_firebase")
     val sessionIdFireBase: String = ""
-)
+): Serializable

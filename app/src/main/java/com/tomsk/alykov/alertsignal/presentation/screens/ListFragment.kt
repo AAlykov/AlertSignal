@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -20,9 +21,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.tomsk.alykov.alertsignal.R
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
 import com.tomsk.alykov.alertsignal.databinding.FragmentListBinding
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 import com.tomsk.alykov.alertsignal.presentation.viewmodels.AlertSessionViewModel
+import com.tomsk.alykov.alertsignal.utils.Calculations.timeStampToString
 
 
 class ListFragment : Fragment() {
@@ -78,10 +81,23 @@ class ListFragment : Fragment() {
             alertSessionListAdapter.setData(list)
         })
 
+        alertSessionViewModel.alertSessionCheck.observe(viewLifecycleOwner, Observer {
+            Log.d("AADebug", "check: " + it.toString())
+            val alertSessionCheckModel = it
+            if (alertSessionCheckModel.errorCheck == "") {
+                binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
+                binding.linearLayoutError.visibility = View.GONE
+            } else {
+                binding.linearLayoutError.visibility = View.VISIBLE
+                binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
+                binding.textViewError.text = alertSessionCheckModel.errorCheck
+            }
+        })
+
         alertSessionViewModel.notConfirmAlertSession.observe(viewLifecycleOwner, Observer {
             if (it!=null) {
                 Log.d("AADebug", "NotConfirm: " + it.toString())
-                val mes = it.senderName + "\n" + it.signalName + "\n" + it.sessionStartTime
+                val mes = it.senderName + "\n" + it.signalName + "\n" + timeStampToString(it.sessionStartTime.toLong())
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Сигнал оповещения!")
                     .setMessage(mes)

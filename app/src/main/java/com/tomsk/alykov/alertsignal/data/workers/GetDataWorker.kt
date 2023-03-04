@@ -1,5 +1,6 @@
 package com.tomsk.alykov.alertsignal.data.workers
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -14,28 +15,158 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.tomsk.alykov.alertsignal.R
+import com.tomsk.alykov.alertsignal.data.firebase.AlertSessionFirebaseInterfaceImpl
+import com.tomsk.alykov.alertsignal.data.firebase.AlertSessionsFirebaseInterface
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
 import com.tomsk.alykov.alertsignal.data.room.AlertSessionDatabase
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 import com.tomsk.alykov.alertsignal.presentation.MainActivity
+import com.tomsk.alykov.alertsignal.utils.Calculations.timeStampToString
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 class GetDataWorker(val context: Context, workerParameters: WorkerParameters): CoroutineWorker(context, workerParameters) {
 
     private val alertSessionDao = AlertSessionDatabase.getDatabase(context).alertSessionDao()
+    private val alertSessionFirebaseInterfaceImpl = AlertSessionFirebaseInterfaceImpl(context as Application)
+
+    //var res = ""
+    val database = Firebase.database
+    val myRef = database.getReference("alert_session")
+
+    init {
+
+    }
+
+
 
     override suspend fun doWork(): Result {
         Log.d("AADebug", "doWork: Begin")
+        //val sessionCheckTimeUnixLong
+        //val sessionCheckTime = ""
+        val errorCheck = ""
         while (true) {
             try {  //самая простая обработка ошибки при работе с корутинами
+
                 Log.d("AADebug", "doWork: try")
+
+                val postListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        // Get Post object and use the values to update the UI
+                        //val post = dataSnapshot.getValue<Post>()
+                        // ...
+                        Log.d("AADebug", "onDataChange: ${dataSnapshot.toString()}")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // Getting Post failed, log a message
+                        Log.d("AADebug", "loadPost:onCancelled", databaseError.toException())
+                    }
+                }
+                myRef.addValueEventListener(postListener)
+
+                /*val alertSessionCheckModel = AlertSessionCheckModel(
+                    "001/1234", "Объект 178", "Техническая проверка системы оповещения",
+                    1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
+                    "20230117 12:40:01","",  "", ""
+                )
+
+                var alertSessionFBModel = AlertSessionFBModel(
+                    "001/1234", "Объект 178", "Техническая проверка системы оповещения",
+                    1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
+                    "1234567890")
+                myRef.setValue(alertSessionFBModel)
+                */
+
+
+                myRef.get().addOnSuccessListener {
+                    Log.d("AADebug", "doWork: myRef.get().addOnSuccessListener = $it")
+
+                    val sessionCheckTimeUnixLong = System.currentTimeMillis()
+                    val sessionGetTimeUnixLong = sessionCheckTimeUnixLong
+                    val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+
+                    val sessionCode = it.child("sessionCode").value.toString()
+                    val senderName = it.child("senderName").value.toString()
+                    val signalName = it.child("signalName").value.toString()
+                    val signalType = it.child("signalType").value.toString()
+                    val signalTypeInt = signalType.toInt()
+                    val signalGrade = it.child("signalGrade").value.toString()
+                    val signalGradeInt = signalGrade.toInt()
+                    val signalText = it.child("signalText").value.toString()
+                    val sessionStartTimeUnix = it.child("sessionStartTimeUnix").value.toString()
+                    val sessionIdFireBase = it.child("sessionIdFireBase").value.toString()
+
+                    val res = it.getValue(AlertSessionFBModel::class.java)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val alertSessionCheckModel = AlertSessionCheckModel(0, sessionCode, senderName,
+                            signalName, signalTypeInt, signalGradeInt, signalText, sessionStartTimeUnix,
+                            sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorCheck, sessionIdFireBase)
+                        alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
+
+                        val alertSessionModel = alertSessionDao.checkAlertSession(sessionCode)
+
+                        if (alertSessionModel != null) {
+                            Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel")
+                        } else {
+                            Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel NO")
+                            val alertSessionModel = AlertSessionModel(
+                                0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt, signalText,
+                                sessionStartTimeUnix, sessionGetTimeUnixLong.toString(), "", "", "", "")
+                            alertSessionDao.addAlertSession(alertSessionModel)
+                            notifyGetDataWorker(context)
+                        }
+                    }
+
+                  }.addOnFailureListener {
+                    val sessionCheckTimeUnixLong = System.currentTimeMillis()
+                    val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+
+                    val errorString = it.toString()
+                    Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
+                    val alertSessionCheckModel = AlertSessionCheckModel(0, "", "",
+                        "", 0, 0, "", "",
+                        sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorString, "")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
+                    }
+                }
+                myRef.get().addOnFailureListener {
+                    val errorString = it.toString()
+                    Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
+                }
+                //Log.d("AADebug", "doWork: " + getDataFB(alertSessionFirebaseInterfaceImpl))
 
                 val alertSessionModel = AlertSessionModel(0, "001/1234", "Объект 178","Техническая проверка системы оповещения",
                     1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
                     "20230117 12:40:01", "20230117 12:40:10", "", "", "", "")
-                alertSessionDao.addAlertSession(alertSessionModel)
+                //alertSessionDao.addAlertSession(alertSessionModel)
 
-                notifyGetDataWorker(context)
+                //notifyGetDataWorker(context)
+
+
+                val locListener: ValueEventListener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        //do stuff here
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("AADebug", "onCancelled: $error.toString()")
+                    }
+                }
+                myRef.addValueEventListener(locListener)
+
 
 
             } catch (e: Exception) {
@@ -95,5 +226,11 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
             return OneTimeWorkRequestBuilder<GetDataWorker>().build()
         }
     }
+
+    fun getDataFB(alertSessionsFirebaseInterface: AlertSessionsFirebaseInterface): String { //AlertSessionModel {
+        return alertSessionsFirebaseInterface.getAlertSessionFB()
+    }
 }
+
+
 
