@@ -182,7 +182,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
     }
 
     private fun notifyGetDataWorker(context: Context, signalName: String) {
-        val contentText = "Получен сигнал оповещения $signalName"
+        val contentText = signalName
         val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -202,7 +202,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
             R.drawable.ic_baseline_crisis_alert_24
         )
         val notification = NotificationCompat.Builder(context, "AlertSignal") //тут убиваем два зайца = без проверок на апи 26
-            .setContentTitle("AlertSignal")
+            .setContentTitle("Получен сигнал оповещения")
             .setContentText(contentText)
             .setColor(context.resources.getColor(R.color.red, null))
             .setShowWhen(true)

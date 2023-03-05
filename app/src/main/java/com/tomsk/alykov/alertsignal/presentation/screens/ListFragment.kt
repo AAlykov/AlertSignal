@@ -82,16 +82,19 @@ class ListFragment : Fragment() {
         })
 
         alertSessionViewModel.alertSessionCheck.observe(viewLifecycleOwner, Observer {
-            Log.d("AADebug", "check: " + it.toString())
-            val alertSessionCheckModel = it
-            if (alertSessionCheckModel.errorCheck == "") {
-                binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
-                binding.linearLayoutError.visibility = View.GONE
-            } else {
-                binding.linearLayoutError.visibility = View.VISIBLE
-                binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
-                binding.textViewError.text = alertSessionCheckModel.errorCheck
+            Log.d("AADebug", "check: $it")
+            val alertSessionCheckModel: AlertSessionCheckModel? = it
+            alertSessionCheckModel?.let {
+                if (alertSessionCheckModel.errorCheck == "") {
+                    binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
+                    binding.linearLayoutError.visibility = View.GONE
+                } else {
+                    binding.linearLayoutError.visibility = View.VISIBLE
+                    binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
+                    binding.textViewError.text = alertSessionCheckModel.errorCheck
+                }
             }
+            //if (alertSessionCheckModel != null) { }
         })
 
         alertSessionViewModel.notConfirmAlertSession.observe(viewLifecycleOwner, Observer {
