@@ -113,7 +113,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                                     0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt, signalText,
                                     sessionStartTimeUnix, sessionGetTimeUnixLong.toString(), "", "", "", "")
                                 alertSessionDao.addAlertSession(alertSessionModel)
-                                notifyGetDataWorker(context)
+                                notifyGetDataWorker(context, signalName)
                             }
                         }
 
@@ -181,8 +181,8 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
 
     }
 
-    private fun notifyGetDataWorker(context: Context) {
-        val contentText = "Получен сигнал оповещения"
+    private fun notifyGetDataWorker(context: Context, signalName: String) {
+        val contentText = "Получен сигнал оповещения $signalName"
         val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
