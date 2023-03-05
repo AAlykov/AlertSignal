@@ -115,7 +115,10 @@ class ListFragment : Fragment() {
             val alertSessionModel = AlertSessionModel(0, "001/1234", "Объект 178","Техническая проверка системы оповещения",
                 1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
                 "20230117 12:40:01", "20230117 12:40:10", "", "", "", "")
-            alertSessionViewModel.addAlertSession(alertSessionModel)
+            //alertSessionViewModel.addAlertSession(alertSessionModel)
+            alertSessionViewModel.addAlertSession2(alertSessionModel){
+                Log.d("AADebug", "mViewModel.insert: RESULT OK")
+            }
         }
 
         //super.onViewCreated(view, savedInstanceState)

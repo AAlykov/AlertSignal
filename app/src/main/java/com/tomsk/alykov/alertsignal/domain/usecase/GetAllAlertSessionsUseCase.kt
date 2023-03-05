@@ -14,3 +14,12 @@ class SetTestUseCase (private val alertSessionsRepositoryInterface: AlertSession
         alertSessionsRepositoryInterface.setTest(alertSessionModel)
     }
 }
+
+class InsertUseCase (private val alertSessionsRepositoryInterface: AlertSessionsRepositoryInterface) {
+
+    suspend fun execute(alertSessionModel: AlertSessionModel, onSuccess:() -> Unit) {
+        alertSessionsRepositoryInterface.insertTest(alertSessionModel) {
+            onSuccess()
+        }
+    }
+}

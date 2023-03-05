@@ -15,8 +15,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -43,6 +45,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
     //var res = ""
     val database = Firebase.database
     val myRef = database.getReference("alert_session")
+    val auth = FirebaseAuth.getInstance()
 
     init {
 
@@ -57,23 +60,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
         val errorCheck = ""
         while (true) {
             try {  //самая простая обработка ошибки при работе с корутинами
-
                 Log.d("AADebug", "doWork: try")
-
-                val postListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // Get Post object and use the values to update the UI
-                        //val post = dataSnapshot.getValue<Post>()
-                        // ...
-                        Log.d("AADebug", "onDataChange: ${dataSnapshot.toString()}")
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // Getting Post failed, log a message
-                        Log.d("AADebug", "loadPost:onCancelled", databaseError.toException())
-                    }
-                }
-                myRef.addValueEventListener(postListener)
 
                 /*val alertSessionCheckModel = AlertSessionCheckModel(
                     "001/1234", "Объект 178", "Техническая проверка системы оповещения",
@@ -89,47 +76,62 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                 */
 
 
-                myRef.get().addOnSuccessListener {
-                    Log.d("AADebug", "doWork: myRef.get().addOnSuccessListener = $it")
+                auth.signInAnonymously().addOnSuccessListener {
+                    myRef.get().addOnSuccessListener {
+                        Log.d("AADebug", "doWork: myRef.get().addOnSuccessListener = $it")
 
-                    val sessionCheckTimeUnixLong = System.currentTimeMillis()
-                    val sessionGetTimeUnixLong = sessionCheckTimeUnixLong
-                    val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+                        val sessionCheckTimeUnixLong = System.currentTimeMillis()
+                        val sessionGetTimeUnixLong = sessionCheckTimeUnixLong
+                        val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
 
-                    val sessionCode = it.child("sessionCode").value.toString()
-                    val senderName = it.child("senderName").value.toString()
-                    val signalName = it.child("signalName").value.toString()
-                    val signalType = it.child("signalType").value.toString()
-                    val signalTypeInt = signalType.toInt()
-                    val signalGrade = it.child("signalGrade").value.toString()
-                    val signalGradeInt = signalGrade.toInt()
-                    val signalText = it.child("signalText").value.toString()
-                    val sessionStartTimeUnix = it.child("sessionStartTimeUnix").value.toString()
-                    val sessionIdFireBase = it.child("sessionIdFireBase").value.toString()
+                        val sessionCode = it.child("sessionCode").value.toString()
+                        val senderName = it.child("senderName").value.toString()
+                        val signalName = it.child("signalName").value.toString()
+                        val signalType = it.child("signalType").value.toString()
+                        val signalTypeInt = signalType.toInt()
+                        val signalGrade = it.child("signalGrade").value.toString()
+                        val signalGradeInt = signalGrade.toInt()
+                        val signalText = it.child("signalText").value.toString()
+                        val sessionStartTimeUnix = it.child("sessionStartTimeUnix").value.toString()
+                        val sessionIdFireBase = it.child("sessionIdFireBase").value.toString()
 
-                    val res = it.getValue(AlertSessionFBModel::class.java)
+                        val res = it.getValue(AlertSessionFBModel::class.java)
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val alertSessionCheckModel = AlertSessionCheckModel(0, sessionCode, senderName,
-                            signalName, signalTypeInt, signalGradeInt, signalText, sessionStartTimeUnix,
-                            sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorCheck, sessionIdFireBase)
-                        alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val alertSessionCheckModel = AlertSessionCheckModel(0, sessionCode, senderName,
+                                signalName, signalTypeInt, signalGradeInt, signalText, sessionStartTimeUnix,
+                                sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorCheck, sessionIdFireBase)
+                            alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
 
-                        val alertSessionModel = alertSessionDao.checkAlertSession(sessionCode)
+                            val alertSessionModel = alertSessionDao.checkAlertSession(sessionCode)
 
-                        if (alertSessionModel != null) {
-                            Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel")
-                        } else {
-                            Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel NO")
-                            val alertSessionModel = AlertSessionModel(
-                                0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt, signalText,
-                                sessionStartTimeUnix, sessionGetTimeUnixLong.toString(), "", "", "", "")
-                            alertSessionDao.addAlertSession(alertSessionModel)
-                            notifyGetDataWorker(context)
+                            if (alertSessionModel != null) {
+                                Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel")
+                            } else {
+                                Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel NO")
+                                val alertSessionModel = AlertSessionModel(
+                                    0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt, signalText,
+                                    sessionStartTimeUnix, sessionGetTimeUnixLong.toString(), "", "", "", "")
+                                alertSessionDao.addAlertSession(alertSessionModel)
+                                notifyGetDataWorker(context)
+                            }
+                        }
+
+                    }.addOnFailureListener {
+                        val sessionCheckTimeUnixLong = System.currentTimeMillis()
+                        val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+
+                        val errorString = it.toString()
+                        Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
+                        val alertSessionCheckModel = AlertSessionCheckModel(0, "", "",
+                            "", 0, 0, "", "",
+                            sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorString, "")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
                         }
                     }
 
-                  }.addOnFailureListener {
+                }.addOnFailureListener {
                     val sessionCheckTimeUnixLong = System.currentTimeMillis()
                     val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
 
@@ -142,9 +144,10 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                         alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
                     }
                 }
+
                 myRef.get().addOnFailureListener {
-                    val errorString = it.toString()
-                    Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
+                    //val errorString = it.toString()
+                    //Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
                 }
                 //Log.d("AADebug", "doWork: " + getDataFB(alertSessionFirebaseInterfaceImpl))
 
@@ -155,17 +158,17 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
 
                 //notifyGetDataWorker(context)
 
-
+/*
                 val locListener: ValueEventListener = object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         //do stuff here
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         Log.d("AADebug", "onCancelled: $error.toString()")
                     }
                 }
                 myRef.addValueEventListener(locListener)
+*/
 
 
 

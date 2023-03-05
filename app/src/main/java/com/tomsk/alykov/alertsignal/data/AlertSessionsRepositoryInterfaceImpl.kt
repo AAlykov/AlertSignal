@@ -2,6 +2,7 @@ package com.tomsk.alykov.alertsignal.data
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
@@ -63,5 +64,28 @@ class AlertSessionsRepositoryInterfaceImpl(private val application: Application)
             ExistingWorkPolicy.REPLACE,
             GetDataWorker2.makeRequest2()
         )*/
+    }
+
+    override suspend fun insertTest(alertSessionModel: AlertSessionModel, onSuccess: () -> Unit) {
+        val database = Firebase.database
+        val myRef = database.getReference("alert_session")
+        val idNote = myRef.push().key.toString()
+        val mapNote = hashMapOf<String, Any>()
+        mapNote["ID_FIREBASE"] = idNote
+        mapNote["NAME"] = "naaaame"
+        mapNote["TEXT"] = "teeeeext"
+
+        myRef.child(idNote)
+            .updateChildren(mapNote)
+            .addOnSuccessListener {
+                onSuccess()
+                Log.d("AADebug", "insert: onSuccess()")
+            }
+            .addOnFailureListener {
+                //showToast(it.message.toString())
+
+                Log.d("AADebug", "insert: onFail() " + it.message.toString())
+            }
+
     }
 }

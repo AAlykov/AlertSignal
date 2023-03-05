@@ -13,5 +13,7 @@ interface AlertSessionsRepositoryInterface {
 
     suspend fun setTest(alertSessionModel: AlertSessionModel)
 
+    suspend fun insertTest(alertSessionModel: AlertSessionModel, onSuccess: () -> Unit)
+
     fun getDataFB()
 }

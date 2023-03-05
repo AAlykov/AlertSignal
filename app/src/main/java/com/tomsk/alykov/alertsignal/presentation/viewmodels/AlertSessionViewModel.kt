@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomsk.alykov.alertsignal.data.AlertSessionsRepositoryInterfaceImpl
 import com.tomsk.alykov.alertsignal.domain.GetAllAlertSessionsUseCase
+import com.tomsk.alykov.alertsignal.domain.InsertUseCase
 import com.tomsk.alykov.alertsignal.domain.usecase.GetNotConfirmAlertSessionUseCase
 import com.tomsk.alykov.alertsignal.domain.SetTestUseCase
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
@@ -21,6 +22,7 @@ class AlertSessionViewModel(application: Application): AndroidViewModel(applicat
     private val getAlertSessionCheckUseCase = GetAlertSessionCheckUseCase(alertSessionsRepositoryInterfaceImpl)
 
     private val setTest = SetTestUseCase(alertSessionsRepositoryInterfaceImpl)
+    private val insert = InsertUseCase(alertSessionsRepositoryInterfaceImpl)
 
     val alertSessionsList = getAllAlertSessionsUseCase.execute()
     val notConfirmAlertSession = getNotConfirmAlertSessionUseCase.execute()
@@ -45,6 +47,15 @@ class AlertSessionViewModel(application: Application): AndroidViewModel(applicat
         viewModelScope.launch ( Dispatchers.IO ) {
             //alertSessionRepository.addAlertSession(alertSessionModel)
             setTest.execute(alertSessionModel)
+        }
+    }
+
+    fun addAlertSession2(alertSessionModel: AlertSessionModel, onSuccess:()->Unit) {
+        viewModelScope.launch ( Dispatchers.IO ) {
+            //alertSessionRepository.addAlertSession(alertSessionModel)
+            insert.execute(alertSessionModel) {
+                onSuccess()
+            }
         }
     }
 
