@@ -51,8 +51,6 @@ class ListFragment : Fragment() {
 
 
 
-
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
 
@@ -84,7 +82,8 @@ class ListFragment : Fragment() {
             val alertSessionCheckModel: AlertSessionCheckModel? = it
             alertSessionCheckModel?.let {
                 if (alertSessionCheckModel.errorCheck == "") {
-                    binding.textViewLastCheck.text = "${alertSessionCheckModel.sessionCheckTime} ${alertSessionCheckModel.sessionCode}"
+                    binding.textViewLastSessionCode.text = alertSessionCheckModel.sessionCode
+                    binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
                     binding.linearLayoutError.visibility = View.GONE
                 } else {
                     binding.linearLayoutError.visibility = View.VISIBLE
@@ -138,7 +137,7 @@ class ListFragment : Fragment() {
             val nowTimeUnix = System.currentTimeMillis()
             val nowTime = timeStampToString(nowTimeUnix)
             val alertSessionFBModel = AlertSessionFBModel("001/$rand", "Объект $rand",
-                "$rand Техническая проверка системы оповещения",(1..3).random(),
+                "Техническая проверка системы оповещения $rand",(1..3).random(),
                 (1..3).random(), "$rand Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст $rand",
                 "$nowTimeUnix", "$nowTime", "")
 

@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Запущен:"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="@color/colorDarkGray"
                     />
 
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:text="22.06.2021 13:25:10"
                     android:layout_marginStart="8dp"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     />
 
             </LinearLayout>
@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Получен:"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="@color/colorDarkGray"
                     />
 
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:text="22.06.2021 13:25:10"
                     android:layout_marginStart="8dp"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     />
 
             </LinearLayout>
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Подтвержден:"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="@color/colorDarkGray"                />
 
                 <TextView
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:text="22.06.2021 13:25:10"
                     android:layout_marginStart="8dp"
-                    android:textSize="16sp"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
 
