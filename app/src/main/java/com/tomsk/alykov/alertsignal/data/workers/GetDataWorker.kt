@@ -66,12 +66,12 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                     "001/1234", "Объект 178", "Техническая проверка системы оповещения",
                     1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
                     "20230117 12:40:01","",  "", ""
-                )
+                )*/
 
-                var alertSessionFBModel = AlertSessionFBModel(
-                    "001/1234", "Объект 178", "Техническая проверка системы оповещения",
+                /*var alertSessionFBModel = AlertSessionFBModel(
+                    "001/1235", "Объект 178", "Техническая проверка системы оповещения",
                     1, 1, "Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст",
-                    "1234567890")
+                    "1678115277999", "06.03.2023 22:07:57", "")
                 myRef.setValue(alertSessionFBModel)
                 */
 
@@ -82,6 +82,8 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
 
                         val sessionCheckTimeUnixLong = System.currentTimeMillis()
                         val sessionGetTimeUnixLong = sessionCheckTimeUnixLong
+                        val sessionGetTime = timeStampToString(sessionGetTimeUnixLong)
+
                         val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
 
                         val sessionCode = it.child("sessionCode").value.toString()
@@ -93,6 +95,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                         val signalGradeInt = signalGrade.toInt()
                         val signalText = it.child("signalText").value.toString()
                         val sessionStartTimeUnix = it.child("sessionStartTimeUnix").value.toString()
+                        val sessionStartTime = it.child("sessionStartTime").value.toString()
                         val sessionIdFireBase = it.child("sessionIdFireBase").value.toString()
 
                         val res = it.getValue(AlertSessionFBModel::class.java)
@@ -110,10 +113,11 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                             } else {
                                 Log.d("AADebug", "doWork: alertSessionDao.checkAlertSession(sessionCode) = $alertSessionModel NO")
                                 val alertSessionModel = AlertSessionModel(
-                                    0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt, signalText,
-                                    sessionStartTimeUnix, sessionGetTimeUnixLong.toString(), "", "", "", "")
+                                    0, sessionCode, senderName, signalName, signalTypeInt, signalGradeInt,
+                                    signalText, sessionStartTimeUnix, sessionStartTime, sessionGetTimeUnixLong.toString(),
+                                    sessionGetTime, "", "", "")
                                 alertSessionDao.addAlertSession(alertSessionModel)
-                                notifyGetDataWorker(context, signalName)
+                                notifyGetDataWorker(context, "$sessionCode $signalName")
                             }
                         }
 

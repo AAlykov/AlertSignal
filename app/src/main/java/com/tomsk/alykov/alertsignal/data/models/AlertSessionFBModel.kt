@@ -24,5 +24,6 @@ data class AlertSessionFBModel(
     val signalGrade: Int = 0,
     val signalText: String = "",
     val sessionStartTimeUnix: String = "",
+    val sessionStartTime: String = "",
     val sessionIdFireBase: String = ""
 ): Serializable

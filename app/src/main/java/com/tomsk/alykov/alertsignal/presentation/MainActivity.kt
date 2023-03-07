@@ -32,49 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController)
 
-        binding.buttonNotify.setOnClickListener {
-
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val notificationChannel =
-                    NotificationChannel(
-                        "AlertSignal",
-                        "Уведомления", //категории уведомлений, можно по русски
-                        NotificationManager.IMPORTANCE_DEFAULT
-                    )
-                notificationManager.createNotificationChannel(notificationChannel)
-            }
-            val intentAlertSignalApp = Intent(this, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(this, 0, intentAlertSignalApp, PendingIntent.FLAG_IMMUTABLE)
-            val vibrate = longArrayOf(100, 500, 100, 500)
-            val bitmap = BitmapFactory.decodeResource(this.resources,
-                R.drawable.ic_baseline_crisis_alert_24
-            )
-            val notification = NotificationCompat.Builder(this, "AlertSignal") //тут убиваем два зайца = без проверок на апи 26
-                .setContentTitle("AlertSignal")
-                .setContentText("Text")
-                .setColor(this.resources.getColor(R.color.red, null))
-                .setShowWhen(true)
-                .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setVibrate(vibrate)
-                .setLights(Color.GREEN, 2000, 3000)
-                .setLargeIcon(bitmap)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setOnlyAlertOnce(true)
-                .setSmallIcon(R.drawable.ic_baseline_crisis_alert_24)
-                .setContentIntent(pendingIntent)
-                //.setContentIntent(PendingIntent.getActivity(this,0, Intent(this, MainActivity::class.java),0))
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .build()
-
-            //val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(1, notification)
-
-        }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

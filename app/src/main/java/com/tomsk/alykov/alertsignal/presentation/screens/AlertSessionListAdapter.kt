@@ -7,12 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
+import com.tomsk.alykov.alertsignal.utils.Calculations.timeStampToString
 
 class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyViewHolder>() {
 
     private var alertSessionList = listOf<AlertSessionModel>()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val textViewSessionCode: TextView = itemView.findViewById(R.id.textViewSessionCode)
         val textViewObjectCenter: TextView = itemView.findViewById(R.id.textViewObjectCenter)
         val textViewSignalName: TextView = itemView.findViewById(R.id.textViewSignalName)
         val textViewTimeSent: TextView = itemView.findViewById(R.id.textViewTimeSent)
@@ -26,11 +28,13 @@ class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyVi
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textViewObjectCenter.text = alertSessionList[position].senderName
-        holder.textViewSignalName.text = alertSessionList[position].signalName
-        holder.textViewTimeSent.text = alertSessionList[position].sessionStartTime
-        holder.textViewTimeRec.text = alertSessionList[position].sessionGetTime
-        holder.textViewTimeConf.text = alertSessionList[position].sessionConfirmTime
+        val alertSessionModel = alertSessionList[position]
+        holder.textViewSessionCode.text = alertSessionModel.sessionCode
+        holder.textViewObjectCenter.text = alertSessionModel.senderName
+        holder.textViewSignalName.text = alertSessionModel.signalName
+        holder.textViewTimeSent.text = alertSessionModel.sessionStartTime
+        holder.textViewTimeRec.text = alertSessionModel.sessionGetTime
+        holder.textViewTimeConf.text = alertSessionModel.sessionConfirmTime
     }
 
     override fun getItemCount(): Int {

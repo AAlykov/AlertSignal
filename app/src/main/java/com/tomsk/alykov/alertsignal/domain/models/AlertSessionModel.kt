@@ -11,8 +11,11 @@ import java.io.Serializable
 //signal_type
 //signal_grade
 //signal_text
+//session_start_time_unix
 //session_start_time
+//session_get_time_unix
 //session_get_time
+//session_confirm_time_unix
 //session_confirm_time
 //user_name
 //user_id_firebase
@@ -41,12 +44,18 @@ data class AlertSessionModel(
     @ColumnInfo(name ="signal_text")
     val signalText: String,
 
+    @ColumnInfo(name ="session_start_time_unix")
+    val sessionStartTimeUnix: String,
     @ColumnInfo(name ="session_start_time")
     val sessionStartTime: String,
 
+    @ColumnInfo(name ="session_get_time_unix")
+    val sessionGetTimeUnix: String,
     @ColumnInfo(name ="session_get_time")
     val sessionGetTime: String,
 
+    @ColumnInfo(name ="session_confirm_time_unix")
+    val sessionConfirmTimeUnix: String,
     @ColumnInfo(name ="session_confirm_time")
     val sessionConfirmTime: String,
 

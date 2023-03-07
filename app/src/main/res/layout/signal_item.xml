@@ -28,15 +28,33 @@
             android:orientation="vertical"
             android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/textViewObjectCenter"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ПУ Объект 107"
-                android:textSize="18sp"
-                android:layout_gravity="end"
-                android:textStyle="bold"/>
+                android:orientation="horizontal"
+                android:padding="4dp">
 
+                <TextView
+                    android:id="@+id/textViewSessionCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123/4567"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/textViewObjectCenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ПУ Объект 107"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
 
 
             <com.google.android.material.card.MaterialCardView

@@ -36,18 +36,21 @@ class AlertSessionsRepositoryInterfaceImpl(private val application: Application)
         return alertSessionDao.getNotConfirmAlertSession()
     }
 
-
-    override fun confirmAlertSession(sessionCode: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun updateAlertSession(alertSessionModel: AlertSessionModel) {
+        return alertSessionDao.updateAlertSession(alertSessionModel)
     }
+
 
     override fun getAlertSessionById(sessionCode: String): AlertSessionModel {
         TODO("Not yet implemented")
     }
 
-    override suspend fun setTest(alertSessionModel: AlertSessionModel) {
-        //alertSessionDao.addAlertSession(alertSessionModel)
-        alertSessionDao.deleteAllAlertSession()//addAlertSession(alertSessionModel)
+    override suspend fun deleteAllAlertSession() {
+        alertSessionDao.deleteAllAlertSession()
+    }
+
+    override suspend fun addAlertSessionRoom(alertSessionModel: AlertSessionModel) {
+        alertSessionDao.addAlertSession(alertSessionModel)
     }
 
     override fun getDataFB() {
@@ -66,26 +69,36 @@ class AlertSessionsRepositoryInterfaceImpl(private val application: Application)
         )*/
     }
 
-    override suspend fun insertTest(alertSessionModel: AlertSessionModel, onSuccess: () -> Unit) {
+    override suspend fun addAlertSessionFB(alertSessionFBModel: AlertSessionFBModel, onSuccess: () -> Unit, onFail: (String) -> Unit) {
         val database = Firebase.database
         val myRef = database.getReference("alert_session")
-        val idNote = myRef.push().key.toString()
+
+        /*val idNote = myRef.push().key.toString()
         val mapNote = hashMapOf<String, Any>()
         mapNote["ID_FIREBASE"] = idNote
         mapNote["NAME"] = "naaaame"
-        mapNote["TEXT"] = "teeeeext"
+        mapNote["TEXT"] = "teeeeext"         */
 
-        myRef.child(idNote)
-            .updateChildren(mapNote)
+        myRef.setValue(alertSessionFBModel)
             .addOnSuccessListener {
                 onSuccess()
-                Log.d("AADebug", "insert: onSuccess()")
+                Log.d("AADebug", "setValue: onSuccess()")
+            }.addOnFailureListener {
+                Log.d("AADebug", "insert: onFail() " + it.message.toString())
+                onFail(it.toString())
+            }
+
+        /* myRef.child(idNote)
+            .updateChildren(mapNote)
+            .addOnSuccessListener {
+
             }
             .addOnFailureListener {
                 //showToast(it.message.toString())
 
-                Log.d("AADebug", "insert: onFail() " + it.message.toString())
             }
+
+        */
 
     }
 }
