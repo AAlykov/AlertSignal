@@ -19,6 +19,7 @@ class AlertSessionViewModel(application: Application): AndroidViewModel(applicat
     private val getNotConfirmAlertSessionUseCase = GetNotConfirmAlertSessionUseCase(alertSessionsRepositoryInterfaceImpl)
 
     private val getAlertSessionCheckUseCase = GetAlertSessionCheckUseCase(alertSessionsRepositoryInterfaceImpl)
+    private val getAlertSessionCheckUseCase2 = GetAlertSessionCheckUseCase2(alertSessionsRepositoryInterfaceImpl)
 
     private val confirmAlertSessionUseCase = ConfirmAlertSessionUseCase(alertSessionsRepositoryInterfaceImpl)
     private val deleteAllRoomUseCase = DeleteAllAlertSessionUseCase(alertSessionsRepositoryInterfaceImpl)
@@ -30,6 +31,7 @@ class AlertSessionViewModel(application: Application): AndroidViewModel(applicat
     val alertSessionsList = getAllAlertSessionsUseCase.execute()
     val notConfirmAlertSession = getNotConfirmAlertSessionUseCase.execute()
     val alertSessionCheck = getAlertSessionCheckUseCase.execute()
+    val alertSessionCheck2 = getAlertSessionCheckUseCase2.execute()
 
     //private val getDataFBUseCase = GetDataFBUseCase(alertSessionsRepositoryInterfaceImpl)
     private val getDataFBUseCase by lazy { GetDataFBUseCase(alertSessionsRepositoryInterfaceImpl) }

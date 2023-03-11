@@ -1,5 +1,7 @@
 package com.tomsk.alykov.alertsignal.presentation.screens
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
@@ -9,15 +11,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 import com.tomsk.alykov.alertsignal.utils.Calculations.timeStampToString
 
-class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyViewHolder>() {
+class AlertSessionListAdapter(val context: Context): RecyclerView.Adapter<AlertSessionListAdapter.MyViewHolder>() {
 
-    private var alertSessionList = listOf<AlertSessionModel>()
+    var alertSessionList = listOf<AlertSessionModel>()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewSessionCode: TextView = itemView.findViewById(R.id.textViewSessionCode)
@@ -27,6 +33,23 @@ class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyVi
         val textViewTimeRec: TextView = itemView.findViewById(R.id.textViewTimeRec)
         val textViewTimeConf: TextView = itemView.findViewById(R.id.textViewTimeConf)
         val rowCardView: MaterialCardView = itemView.findViewById(R.id.row_cardView)
+        val cardViewSignalName: MaterialCardView = itemView.findViewById(R.id.cardViewSignalName)
+
+        init {
+            rowCardView.setOnClickListener {
+                val position = adapterPosition
+                Log.d("AADebug", "Item clicked at: $position")
+
+                val action = Navigation.findNavController(it).navigate(ListFragmentDirections.actionListFragmentToSignalInfoFragment())
+                //val action2 = ListFragmentDirections.actionListFragmentToSignalInfoFragment(alertSessionList[position])
+
+
+                //val action = HabitListFragmentDirections.actionHabitListFragmentToUpdateHabitFragment((habitList[position]),habitList[position].habit_startTime )
+                //itemView.findNavController().navigate(action)
+            }
+        }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -34,7 +57,6 @@ class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyVi
         return MyViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val alertSessionModel = alertSessionList[position]
         holder.textViewSessionCode.text = alertSessionModel.sessionCode
@@ -44,15 +66,28 @@ class AlertSessionListAdapter: RecyclerView.Adapter<AlertSessionListAdapter.MyVi
         holder.textViewTimeRec.text = alertSessionModel.sessionGetTime
         holder.textViewTimeConf.text = alertSessionModel.sessionConfirmTime
 
-        if (position == 0) {
-            //holder.rowCardView.cardElevation = 200f
-            //val aaa = holder.rowCardView.cardBackgroundColor
-            //Log.d("AADebug", "onBindViewHolder: $aaa")
-            //holder.rowCardView.outlineSpotShadowColor = Color.YELLOW
+        if (alertSessionModel.signalGrade == 1) {
+            //holder.cardViewSignalName.radius = 30f
+            //holder.cardViewSignalName.setCardBackgroundColor(context.getColor(R.color.red2))
+            //holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.colorLightRed))
+            holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.red2))
 
+        } else if (alertSessionModel.signalGrade == 2) {
+            //holder.cardViewSignalName.radius = 30f
+            holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.yellow2))
+
+        } else if (alertSessionModel.signalGrade == 3) {
+            //holder.cardViewSignalName.radius = 30f
+            //holder.cardViewSignalName.setBackgroundColor(context.getColor(R.color.green2))
+            holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.green2))
+        } else if (alertSessionModel.signalGrade == 4) {
+            holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.white))
+            //holder.cardViewSignalName.radius = 30f
+            //holder.cardViewSignalName.setBackgroundColor(context.getColor(R.color.green2))
+            //holder.textViewSignalName.setBackgroundColor(context.getColor(R.color.green2))
         }
-        else
-            holder.rowCardView.maxCardElevation = 0f
+
+
     }
 
     override fun getItemCount(): Int {

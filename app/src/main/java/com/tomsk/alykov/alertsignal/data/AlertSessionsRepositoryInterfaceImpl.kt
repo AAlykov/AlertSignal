@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
 import com.tomsk.alykov.alertsignal.data.room.AlertSessionDatabase
 import com.tomsk.alykov.alertsignal.data.workers.GetDataWorker
@@ -30,6 +31,10 @@ class AlertSessionsRepositoryInterfaceImpl(private val application: Application)
 
     override fun getAlertSessionCheck(): LiveData<AlertSessionCheckModel> {
         return alertSessionDao.getAlertSessionCheck()
+    }
+
+    override fun getAlertSessionCheck2(): LiveData<AlertSessionCheckModel2> {
+        return alertSessionDao.getAlertSessionCheck2()
     }
 
     override fun getNotConfirmAlertSession(): LiveData<AlertSessionModel> {

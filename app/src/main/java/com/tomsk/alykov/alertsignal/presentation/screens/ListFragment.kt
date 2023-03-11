@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
 import com.tomsk.alykov.alertsignal.databinding.FragmentListBinding
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
@@ -65,7 +66,7 @@ class ListFragment : Fragment() {
             //navController.navigate(R.id.signalInfoFragment)
             navController.navigate(R.id.action_listFragment_to_signalInfoFragment)
         }
-        alertSessionListAdapter = AlertSessionListAdapter()
+        alertSessionListAdapter = AlertSessionListAdapter(requireContext())
         alertSessionRecyclerView = binding.rvAlertsessions
         alertSessionRecyclerView.adapter = alertSessionListAdapter
 
@@ -93,6 +94,16 @@ class ListFragment : Fragment() {
             }
             //if (alertSessionCheckModel != null) { }
         })
+
+        alertSessionViewModel.alertSessionCheck2.observe(viewLifecycleOwner, Observer {
+            Log.d("AADebug", "check: $it")
+            val alertSessionCheckModel2: AlertSessionCheckModel2? = it
+            alertSessionCheckModel2?.let {
+                binding.textViewLastCheck2.text = alertSessionCheckModel2.sessionCheckTime
+            }
+            //if (alertSessionCheckModel != null) { }
+        })
+
 
         alertSessionViewModel.notConfirmAlertSession.observe(viewLifecycleOwner, Observer {
             if (it!=null) {
@@ -137,8 +148,8 @@ class ListFragment : Fragment() {
             val nowTimeUnix = System.currentTimeMillis()
             val nowTime = timeStampToString(nowTimeUnix)
             val alertSessionFBModel = AlertSessionFBModel("001/$rand", "Объект $rand",
-                "Техническая проверка системы оповещения $rand",(1..3).random(),
-                (1..3).random(), "$rand Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст $rand",
+                "Техническая проверка системы оповещения $rand",(1..4).random(),
+                (1..4).random(), "$rand Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст $rand",
                 "$nowTimeUnix", "$nowTime", "")
 
             alertSessionViewModel.addAlertSessionFB(

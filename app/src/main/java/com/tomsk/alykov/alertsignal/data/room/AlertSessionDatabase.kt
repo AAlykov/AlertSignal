@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
-@Database(entities = [AlertSessionModel::class, AlertSessionCheckModel::class], version = 1)
+@Database(entities = [AlertSessionModel::class, AlertSessionCheckModel::class, AlertSessionCheckModel2::class], version = 1)
 abstract class AlertSessionDatabase: RoomDatabase() {
     abstract fun alertSessionDao(): AlertSessionDao
     companion object {

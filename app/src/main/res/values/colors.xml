@@ -15,8 +15,11 @@
     <color name="dark">#313C44</color>
     <color name="darker">#151B20</color>
     <color name="red">#FF0000</color>
+    <color name="red2">#FA4D4D</color>
     <color name="yellow">#FFBC00</color>
+    <color name="yellow2">#FFED64</color>
     <color name="green">#00FF00</color>
+    <color name="green2">#6BFF91</color>
 
     <color name="colorLightRed">#FFAAAD</color>
     <color name="colorLightGreen">#AAFFB4</color>

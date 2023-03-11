@@ -8,6 +8,6 @@
     <string name="caption_connection_problem">Ошибка подключения</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_login">Войти</string>
-    <string name="caption_signals_list">Список сигналов</string>
-    <string name="caption_signal_info">Подробная информация о сигнале</string>
+    <string name="caption_signals_list">Список сеансов оповещения</string>
+    <string name="caption_signal_info">Подробная информация о сеансе оповещения</string>
 </resources>

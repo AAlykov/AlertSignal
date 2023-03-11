@@ -26,6 +26,7 @@ import com.tomsk.alykov.alertsignal.R
 import com.tomsk.alykov.alertsignal.data.firebase.AlertSessionFirebaseInterfaceImpl
 import com.tomsk.alykov.alertsignal.data.firebase.AlertSessionsFirebaseInterface
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
 import com.tomsk.alykov.alertsignal.data.room.AlertSessionDatabase
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
@@ -75,12 +76,21 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                 myRef.setValue(alertSessionFBModel)
                 */
 
+                val sessionCheckTimeUnixLongCommon = System.currentTimeMillis()
+                val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLongCommon)
+                val alertSessionCheckModel2 = AlertSessionCheckModel2(0, "", "",
+                    "", 0, 0, "", "",
+                    sessionCheckTimeUnixLongCommon.toString(), sessionCheckTime, "", "")
+                CoroutineScope(Dispatchers.IO).launch {
+                    alertSessionDao.updateAlertSessionCheck2(alertSessionCheckModel2)
+                }
+
+                val sessionCheckTimeUnixLong = System.currentTimeMillis()
 
                 auth.signInAnonymously().addOnSuccessListener {
                     myRef.get().addOnSuccessListener {
                         Log.d("AADebug", "doWork: myRef.get().addOnSuccessListener = $it")
 
-                        val sessionCheckTimeUnixLong = System.currentTimeMillis()
                         val sessionGetTimeUnixLong = sessionCheckTimeUnixLong
                         val sessionGetTime = timeStampToString(sessionGetTimeUnixLong)
 
@@ -136,8 +146,8 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                     }
 
                 }.addOnFailureListener {
-                    val sessionCheckTimeUnixLong = System.currentTimeMillis()
-                    val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+                    //val sessionCheckTimeUnixLong = System.currentTimeMillis()
+
 
                     val errorString = it.toString()
                     Log.d("AADebug", "doWork: addOnFailureListener errorString = $errorString")
@@ -145,6 +155,20 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters): C
                         "", 0, 0, "", "",
                         sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorString, "")
                     CoroutineScope(Dispatchers.IO).launch {
+                        alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
+                    }
+                }
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(10000)
+                    //val sessionCheckTimeUnixLong = System.currentTimeMillis()
+                    val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
+                    val checkTime = alertSessionDao.getIdAlertSessionCheckTime(sessionCheckTimeUnixLong.toString())
+                    if (checkTime == null) {
+                        val errorString = "время (10 сек) ожидания ответа от сервера истекло"
+                        val alertSessionCheckModel = AlertSessionCheckModel(0, "", "",
+                            "", 0, 0, "", "",
+                            sessionCheckTimeUnixLong.toString(), sessionCheckTime, errorString, "")
                         alertSessionDao.updateAlertSessionCheck(alertSessionCheckModel)
                     }
                 }

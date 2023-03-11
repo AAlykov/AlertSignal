@@ -39,7 +39,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="123/4567"
-                    android:textColor="@color/black"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -51,8 +50,7 @@
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:maxLines="2"
-                    android:ellipsize="end"
-                    android:textColor="@color/black"/>
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 
@@ -62,12 +60,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:cardBackgroundColor="@color/colorLightGreen"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
                 <TextView
                     android:id="@+id/textViewSignalName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="Техническая проверка системы оповещения"
@@ -88,7 +86,6 @@
                     android:layout_height="wrap_content"
                     android:text="Запущен:"
                     android:textSize="14sp"
-                    android:textColor="@color/colorDarkGray"
                     />
 
                 <TextView
@@ -114,7 +111,6 @@
                     android:layout_height="wrap_content"
                     android:text="Получен:"
                     android:textSize="14sp"
-                    android:textColor="@color/colorDarkGray"
                     />
 
                 <TextView
@@ -138,8 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Подтвержден:"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorDarkGray"                />
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/textViewTimeConf"

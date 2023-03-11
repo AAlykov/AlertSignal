@@ -3,6 +3,7 @@ package com.tomsk.alykov.alertsignal.data.room
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
 
 @Dao
@@ -32,7 +33,16 @@ interface AlertSessionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateAlertSessionCheck(alertSessionCheckModel: AlertSessionCheckModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateAlertSessionCheck2(alertSessionCheckModel2: AlertSessionCheckModel2)
+
     @Query("select * from alert_sessions_check_table")
     fun getAlertSessionCheck(): LiveData<AlertSessionCheckModel>
+
+    @Query("select * from alert_sessions_check_table2")
+    fun getAlertSessionCheck2(): LiveData<AlertSessionCheckModel2>
+
+    @Query("select session_code from alert_sessions_check_table where session_check_time_unix = :sessionCheckTimeUnix")
+    fun getIdAlertSessionCheckTime(sessionCheckTimeUnix: String): String
 
 }
