@@ -6,18 +6,9 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
-import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
-import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
-import com.tomsk.alykov.alertsignal.utils.Calculations
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 class GetDataWorker2(val context: Context, workerParameters: WorkerParameters):Worker(context, workerParameters) {
 

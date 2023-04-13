@@ -7,104 +7,86 @@
     tools:context=".presentation.screens.ListFragment">
 
     <LinearLayout
-        android:id="@+id/linearLayoutLastCheck2"
+        android:id="@+id/linearLayoutRequestAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="end"
-        android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutLastCheck"
+        app:layout_constraintBottom_toTopOf="@+id/textViewError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="обращение"
-            android:textSize="14sp"/>
+            android:orientation="vertical"
+            android:gravity="end">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="запрос:"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="ответ:"
+                android:textSize="14sp"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewLastCheck2"
+        <LinearLayout
+            android:id="@+id/linearLayoutLastCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="--.--.---- --:--:--"
-            android:textSize="14sp"
-            android:paddingStart="8dp"
-            />
+            android:orientation="vertical"
+            android:gravity="end"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:id="@+id/textViewRequestCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--.--.---- --:--:--"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/textViewAnswerCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="--.--.---- --:--:--"
+                android:textSize="14sp"/>
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutLastCheck"
+    <TextView
+        android:id="@+id/textViewError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutError"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastCheck2">
-
-        <TextView
-            android:id="@+id/textViewLastSessionCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            tools:text="123/1234"
-            android:textSize="14sp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="обновлено"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/textViewLastCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="--.--.---- --:--:--"
-            android:textSize="14sp"
-            android:paddingStart="8dp"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/linearLayoutError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="8dp"
+        android:gravity="start"
+        android:text="Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка "
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rv_alertsessions"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastCheck">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutRequestAnswer" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ошибка получения данных: "
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/textViewError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка Ошибка "
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
+    <View
+        android:id="@+id/viewBorder1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/darkGray"
+        app:layout_constraintTop_toBottomOf="@+id/textViewError"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_alertsessions"
@@ -114,11 +96,35 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:alpha="1"
-        app:layout_constraintBottom_toTopOf="@id/linearLayoutTestButton"
+        app:layout_constraintBottom_toTopOf="@id/viewBorder2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutError"
+        app:layout_constraintTop_toBottomOf="@+id/viewBorder1"
         tools:listitem="@layout/signal_item"/>
+
+    <View
+        android:id="@+id/viewBorder2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/darkGray"
+        app:layout_constraintTop_toBottomOf="@+id/rv_alertsessions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rv_system_journal"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_system_journal"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutTestButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewBorder2"
+        tools:listitem="@layout/journal_item"/>
 
     <ImageView
         android:id="@+id/iv_internet_error"
@@ -155,7 +161,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_alertsessions"
+        app:layout_constraintTop_toBottomOf="@+id/rv_system_journal"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"

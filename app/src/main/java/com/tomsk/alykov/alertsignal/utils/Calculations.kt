@@ -10,7 +10,13 @@ object Calculations {
         val stamp = Timestamp(timeStamp)
         val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
         val date = sdf.format(Date(stamp.time))
+        return date.toString()
+    }
 
+    fun timeStampToStringSSS(timeStamp: Long): String {
+        val stamp = Timestamp(timeStamp)
+        val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SSS")
+        val date = sdf.format(Date(stamp.time))
         return date.toString()
     }
 }

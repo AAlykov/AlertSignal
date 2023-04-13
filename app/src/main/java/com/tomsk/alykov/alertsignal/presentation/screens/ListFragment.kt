@@ -1,6 +1,5 @@
 package com.tomsk.alykov.alertsignal.presentation.screens
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -23,8 +22,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tomsk.alykov.alertsignal.R
-import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel
-import com.tomsk.alykov.alertsignal.data.models.AlertSessionCheckModel2
+import com.tomsk.alykov.alertsignal.data.models.AlertSessionRequestAnswerModel
 import com.tomsk.alykov.alertsignal.data.models.AlertSessionFBModel
 import com.tomsk.alykov.alertsignal.databinding.FragmentListBinding
 import com.tomsk.alykov.alertsignal.domain.models.AlertSessionModel
@@ -39,6 +37,7 @@ class ListFragment : Fragment() {
     private lateinit var alertSessionList: List<AlertSessionModel>
     private lateinit var alertSessionViewModel: AlertSessionViewModel
     private lateinit var alertSessionListAdapter: AlertSessionListAdapter
+    private lateinit var alertSignalSystemJournalAdapter: AlertSignalJournalAdapter
     private lateinit var alertSessionRecyclerView: RecyclerView
 
     override fun onCreateView(
@@ -70,40 +69,40 @@ class ListFragment : Fragment() {
         alertSessionRecyclerView = binding.rvAlertsessions
         alertSessionRecyclerView.adapter = alertSessionListAdapter
 
+        alertSignalSystemJournalAdapter = AlertSignalJournalAdapter(requireContext())
+        binding.rvSystemJournal.adapter = alertSignalSystemJournalAdapter
+
         alertSessionViewModel = ViewModelProvider(this).get(AlertSessionViewModel::class.java)
 
+        alertSessionViewModel.getTodaySystemJournal.observe(viewLifecycleOwner, Observer {
+            //Log.d("AADebug", "list: " + it.toString())
+            val list = it
+            alertSignalSystemJournalAdapter.setData(list)
+        })
+
         alertSessionViewModel.alertSessionsList.observe(viewLifecycleOwner, Observer {
-            Log.d("AADebug", "list: " + it.toString())
+            //Log.d("AADebug", "list: " + it.toString())
             val list = it
             alertSessionListAdapter.setData(list)
         })
 
         alertSessionViewModel.alertSessionCheck.observe(viewLifecycleOwner, Observer {
-            Log.d("AADebug", "check: $it")
-            val alertSessionCheckModel: AlertSessionCheckModel? = it
+            //Log.d("AADebug", "check: $it")
+            val alertSessionCheckModel: AlertSessionRequestAnswerModel? = it
             alertSessionCheckModel?.let {
                 if (alertSessionCheckModel.errorCheck == "") {
-                    binding.textViewLastSessionCode.text = alertSessionCheckModel.sessionCode
-                    binding.textViewLastCheck.text = alertSessionCheckModel.sessionCheckTime
-                    binding.linearLayoutError.visibility = View.GONE
+                    binding.textViewRequestCheck.text = alertSessionCheckModel.requestTime
+                    binding.textViewAnswerCheck.text = alertSessionCheckModel.answerTime
+                    binding.textViewError.visibility = View.GONE
                 } else {
-                    binding.linearLayoutError.visibility = View.VISIBLE
-                    binding.textViewLastCheck.text = "${alertSessionCheckModel.sessionCheckTime} ${alertSessionCheckModel.sessionCode}"
+                    binding.textViewError.visibility = View.VISIBLE
+                    binding.textViewRequestCheck.text = alertSessionCheckModel.requestTime
+                    binding.textViewAnswerCheck.text = alertSessionCheckModel.answerTime
                     binding.textViewError.text = alertSessionCheckModel.errorCheck
                 }
             }
             //if (alertSessionCheckModel != null) { }
         })
-
-        alertSessionViewModel.alertSessionCheck2.observe(viewLifecycleOwner, Observer {
-            Log.d("AADebug", "check: $it")
-            val alertSessionCheckModel2: AlertSessionCheckModel2? = it
-            alertSessionCheckModel2?.let {
-                binding.textViewLastCheck2.text = alertSessionCheckModel2.sessionCheckTime
-            }
-            //if (alertSessionCheckModel != null) { }
-        })
-
 
         alertSessionViewModel.notConfirmAlertSession.observe(viewLifecycleOwner, Observer {
             if (it!=null) {
