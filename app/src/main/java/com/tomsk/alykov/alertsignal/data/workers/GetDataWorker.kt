@@ -51,8 +51,13 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters) :
     val myRefPing = database.getReference("alert_session_ping")
     val auth = FirebaseAuth.getInstance()
     private val setCheckDelay = 20
-    private val setCheckPeriod = 30
+    private val setCheckPeriod = 10
     var firstStart = true
+
+    init {
+        val alertSessionRequestAnswerModel = AlertSessionRequestAnswerModel(0, "", "","", "", "", "")
+        alertSessionDao.insertAlertSessionRequestAnswer(alertSessionRequestAnswerModel)
+    }
 
     override suspend fun doWork(): Result {
         //Log.d("AADebug", "doWork: Begin")
@@ -69,7 +74,6 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters) :
                         val sessionCheckTimeUnixLongCommon = System.currentTimeMillis()
                         val requestTime = timeStampToString(sessionCheckTimeUnixLongCommon)
 
-                        //val alertSessionRequestAnswerModel = AlertSessionRequestAnswerModel(0, sessionCheckTimeUnixLongCommon.toString(), requestTime,"", "", "", "")
                         CoroutineScope(Dispatchers.IO).launch {
                             alertSessionDao.updateAlertSessionRequest(sessionCheckTimeUnixLongCommon.toString(), requestTime)
                         }

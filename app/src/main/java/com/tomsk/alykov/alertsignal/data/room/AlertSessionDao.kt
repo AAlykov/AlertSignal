@@ -30,10 +30,10 @@ interface AlertSessionDao {
     @Query("select id from alert_sessions_table where session_code = :sessionCode order by session_start_time desc limit 1")
     fun checkAlertSession(sessionCode: String): Int
 
-    //@Insert(onConflict = OnConflictStrategy.REPLACE)
-    //suspend fun updateAlertSessionCheck(alertSessionCheckModel: AlertSessionCheckModel)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAlertSessionRequestAnswer(alertSessionRequestAnswerModel: AlertSessionRequestAnswerModel)
 
-    @Query("update alert_session_request_answer_table set request_time_unix = :requestTimeUnix, request_time = :requestTime, answer_time_unix = '', answer_time = ''")
+    @Query("update alert_session_request_answer_table set request_time_unix = :requestTimeUnix, request_time = :requestTime, answer_time_unix = '', answer_time = '...'")
     suspend fun updateAlertSessionRequest(requestTimeUnix: String, requestTime: String)
 
     @Query("update alert_session_request_answer_table set answer_time_unix = :answerTimeUnix, answer_time = :answerTime")

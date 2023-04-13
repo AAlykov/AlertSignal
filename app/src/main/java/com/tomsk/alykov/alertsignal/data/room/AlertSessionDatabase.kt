@@ -32,7 +32,7 @@ abstract class AlertSessionDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AlertSessionDatabase::class.java,
-                    "alert_session_database2")
+                    "alert_session_database3")
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
