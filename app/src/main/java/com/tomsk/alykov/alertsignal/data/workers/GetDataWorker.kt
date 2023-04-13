@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import kotlin.math.roundToInt
 
 
 class GetDataWorker(val context: Context, workerParameters: WorkerParameters) :
@@ -128,7 +129,7 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters) :
                                 val errorString = it.toString()
                                 Log.d("AADebug","doWork: addOnFailureListener errorString = $errorString")
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
+                                    //alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
                                     alertSessionDao.updateAlertSessionRequestAnswerError(errorCheck)
                                 }
                             }
@@ -139,22 +140,22 @@ class GetDataWorker(val context: Context, workerParameters: WorkerParameters) :
                             val errorString = it.toString()
                             Log.d("AADebug","doWork: addOnFailureListener errorString = $errorString")
                             CoroutineScope(Dispatchers.IO).launch {
-                                alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
+                                //alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
                                 alertSessionDao.updateAlertSessionRequestAnswerError(errorCheck)
                             }
                         }
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            delay(setCheckPeriod/2.toLong() * 1000)
+                            delay((setCheckPeriod.toFloat()/2).roundToInt().toLong() * 1000)
                             val alertSessionRequestAnswerModel = alertSessionDao.getAlertSessionRequestAnswerModel()
                             if (alertSessionRequestAnswerModel.answerTimeUnix == "") {
                                 val sessionCheckTimeUnixLong = System.currentTimeMillis()
                                 val sessionCheckTime = timeStampToString(sessionCheckTimeUnixLong)
-                                val errorString = "время (${setCheckPeriod/2} сек) ожидания ответа от сервера истекло"
+                                val errorString = "время (${(setCheckPeriod/2).toFloat().roundToInt()} сек) ожидания ответа от сервера истекло"
                                 Log.d("AADebug","doWork: addOnFailureListener errorString = $errorString")
                                 alertSessionDao.updateAlertSessionRequestAnswerError(errorString)
-                                alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
-                                writeToSystemJournal("GetDataWorker Problem Server Answer Time (${setCheckPeriod/2} sec) out")
+                                //alertSessionDao.updateAlertSessionAnswer(sessionCheckTimeUnixLong.toString(),sessionCheckTime)
+                                writeToSystemJournal("GetDataWorker Problem Server Answer Time (${(setCheckPeriod/2).toFloat().roundToInt()} sec) out")
                             }
                         }
 
